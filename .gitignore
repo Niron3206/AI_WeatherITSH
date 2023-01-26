@@ -1,0 +1,4 @@
+venv/*
+csv_files/*
+saved_model/*
+__pychache__/*
