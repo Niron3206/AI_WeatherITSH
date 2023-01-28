@@ -13,7 +13,7 @@ mpl.rcParams['axes.grid'] = False
 tf.random.set_seed(13)
 
 # strings for training (300000 - default)
-TRAIN_SPLIT = 400000
+TRAIN_SPLIT = 300000
 
 # cycles to go through (10 - default)
 EPOCHS = 10
