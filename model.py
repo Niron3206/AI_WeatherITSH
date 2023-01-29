@@ -81,6 +81,6 @@ def model():
         multi_step_plot(x[0], y[0], model.predict(x)[0], STEP)
     '''
     
-    model.save('saved_model/AI_WeatherITSH-2.0')
+    model.save('saved_model/AI_WeatherITSH')
 
 model()

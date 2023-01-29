@@ -4,7 +4,7 @@ import pandas as pd
 from visualization import future_weather
 
 def forecast():
-    model = tf.keras.models.load_model('saved_model/AI_WeatherITSH-2.0', compile = True)
+    model = tf.keras.models.load_model('saved_model/AI_WeatherITSH', compile = True)
 
     df = pd.read_csv('./csv_files/moscow.csv')
     data = df[['pressure', 'tempC', 'humidity']]

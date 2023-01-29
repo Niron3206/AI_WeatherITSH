@@ -14,6 +14,7 @@ DAYS = 5
 START_DATE = (date.today() - timedelta(days=DAYS - 1)).strftime("%d-%b-%Y").upper()
 END_DATE = date.today().strftime("%d-%b-%Y").upper()
 
+#here goes your api key
 API_KEY = 'your token here'
 LOCATION_LIST = ['moscow']
 
