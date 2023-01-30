@@ -32,10 +32,10 @@ After when everything is done, run `forecast.py` script to get your forecast as 
 
 ## 📷 Screenshots
 
-Weather forecast from 10:00 to 22:00 in 24.07.2022
+Weather forecast from 10:00 to 22:00 in 24.07.2022 (Moscow)
 
 ![10.00-22.00_24.07.22](https://media.discordapp.net/attachments/695563421491396728/1069341219391549460/10.00-22.00_24.07.22.png)
 
-Weather forecast from 0:00 to 12:00 in 28.01.2023 (not so accurate temperature, depends on time of training model)
+Weather forecast from 0:00 to 12:00 in 28.01.2023 (Moscow) (not so accurate temperature, depends on time of training model)
 
 ![0.00-12.00_28.01.23](https://media.discordapp.net/attachments/695563421491396728/1069394784529170442/0.00-12.00_28.01.23.png)
