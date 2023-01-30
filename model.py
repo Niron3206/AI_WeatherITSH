@@ -81,6 +81,9 @@ def model():
         multi_step_plot(x[0], y[0], model.predict(x)[0], STEP)
     '''
     
+    if not os.path.exists('saved_model'):
+        os.makedirs('saved_model')
+        
     model.save('saved_model/AI_WeatherITSH')
 
 model()

@@ -4,6 +4,8 @@ from datetime import timedelta
 from wwo_hist import retrieve_hist_data
 
 import os
+if not os.path.exists('csv_files'):
+    os.makedirs('csv_files')
 os.chdir(".\csv_files")
 
 # interval in hours
