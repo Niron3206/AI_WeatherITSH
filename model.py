@@ -68,7 +68,7 @@ def model():
                                     return_sequences=True,
                                     input_shape=x_train.shape[-2:]))
     model.add(tf.keras.layers.LSTM(16, activation='relu'))
-    model.add(tf.keras.layers.Dense(72))
+    model.add(tf.keras.layers.Dense(future_target))
     model.compile(optimizer=tf.keras.optimizers.RMSprop(clipvalue=1.0), loss='mae')
 
     # learning model
