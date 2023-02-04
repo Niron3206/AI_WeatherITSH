@@ -17,7 +17,7 @@ It has bugs... and there's lot of things to improve.
 
 ## 🔧 Downloading and setting up
 
-1. Make sure you have version of python `3.9.X` or higher.
+1. Make sure you have version of python `3.10.X` or higher.
 2. Set up your environment (venv/conda etc... by your choice) and install all requirements.
 3. Compile and train the model by simply running `model.py` script. (You can adjust model as you want, merely edit every needed variables)
 
