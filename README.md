@@ -17,7 +17,7 @@ It has bugs... and there's lot of things to improve.
 
 ## 🔧 Downloading and setting up
 
-1. Make sure you have version of python `3.9.X` or higher.
+1. Make sure you have version of python `3.10.X` or higher.
 2. Set up your environment (venv/conda etc... by your choice) and install all requirements.
 3. Compile and train the model by simply running `model.py` script. (You can adjust model as you want, merely edit every needed variables)
 
@@ -25,8 +25,10 @@ Done... you've got a trained and fully capable of predicting model.
 
 #### So how do we predict?
 
-I'd recommend that you use [wwo_hist](https://www.worldweatheronline.com/weather-api/api/) api for it. There's my coded script to obtain data from this library.
-But you have to get your api key (they give a trial 30-days one) and paste in `API_KEY`.
+In this project, I used REST API from `https://narodmon.ru` site. To obtain the weather data, you have to set up some environment variables in `narodmonitoring\.env` file.
+Before you do that, you must create an account there and get your api key, login and password.
+Also, find any public sensors(pressure, temperature, humidity) then get their ids and insert into `history.py` script.
+Run `__init.py`.
 
 After when everything is done, run `forecast.py` script to get your forecast as matplot visualization.
 

@@ -1,13 +1,9 @@
 import tensorflow as tf
 
-import matplotlib as mpl
 import os
 import pandas as pd
 
 from intervals_organization import organize
-
-mpl.rcParams['figure.figsize'] = (8, 6)
-mpl.rcParams['axes.grid'] = False
 
 # setting global random seed
 tf.random.set_seed(13)
@@ -18,8 +14,8 @@ TRAIN_SPLIT = 300000
 # cycles to go through (10 - default)
 EPOCHS = 10
 
-# steps in one cycle (500 - default)
-EVALUATION_INTERVAL = 1000
+# steps in one cycle (200 - default)
+EVALUATION_INTERVAL = 200
 
 def model():
 
@@ -42,9 +38,9 @@ def model():
     dataset = (dataset-data_mean)/data_std
 
     # separation for trainings
-    STEP = 6                                    # 1 step = 10 min, so if you set it to 6, it will only take data in every hour
-    past_history = 720                          # past_history - amount of choosen data for prediction (5days * 24hours * 6steps = 750)
-    future_target = 72                          # future_target - how far in time to predict (12hours * 6steps = 72)
+    STEP = 6                                     # 1 step = 10 min, so if you set it to 6, it will only take data in every hour
+    past_history = 1008                          # past_history - amount of choosen data for prediction (7days * 24hours * 6steps = 1008)
+    future_target = 144                          # future_target - how far in time to predict (24hours * 6steps = 144)
 
 
     x_train, y_train = organize(dataset, dataset[:,1], 0, TRAIN_SPLIT, past_history, future_target, STEP)
@@ -76,14 +72,9 @@ def model():
                 steps_per_epoch=EVALUATION_INTERVAL,
                 validation_data=val, validation_steps=50)
 
-    '''
-    for x, y in val.take(3):
-        multi_step_plot(x[0], y[0], model.predict(x)[0], STEP)
-    '''
-    
     if not os.path.exists('saved_model'):
         os.makedirs('saved_model')
         
-    model.save('saved_model/AI_WeatherITSH')
+    model.save('saved_model/AI_WeatherITSH-24H')
 
 model()
