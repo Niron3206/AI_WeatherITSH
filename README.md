@@ -27,7 +27,7 @@ Done... you've got a trained and fully capable of predicting model.
 
 In this project, I used REST API from `https://narodmon.ru` site. To obtain the weather data, you have to set up some environment variables in `narodmonitoring\.env` file.
 Before you do that, you must create an account there and get your api key, login and password.
-Also, find any public sensors(pressure, temperature, humidity) then get their ids and insert into `history.py` script.
+Also, find any public sensors(pressure, temperature, humidity) then get their ids and insert into `narodmonitoring\.env` file.
 Run `__init__.py`.
 
 After when everything is done, run `forecast.py` script to get your forecast as matplot visualization.
