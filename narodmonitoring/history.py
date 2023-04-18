@@ -5,11 +5,8 @@ import json
 import pandas as pd
 from datetime import datetime
 
-def get_history(api_key, md5_app_id):
+def get_history(api_key, md5_app_id, pressure_id, temperature_id, humidity_id):
 
-    pressure_id = 'your id here'
-    temperature_id = 'your id here'
-    humidity_id = 'your id here'
     period = 'month'
     offset = '1'
 
