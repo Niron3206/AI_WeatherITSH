@@ -1,5 +1,5 @@
 
-![AI_WeatherITSH](https://media.discordapp.net/attachments/695563421491396728/1069339477945897163/AI_WeatherITSH.png)
+![AI_WeatherITSH](https://github.com/Niron3206/AI_WeatherITSH/raw/master/AI_WeatherITSH.png)
 
 **English** | [Русский](./README-ru.md)
 
@@ -36,8 +36,8 @@ After when everything is done, run `forecast.py` script to get your forecast as 
 
 Weather forecast from 10:00 to 22:00 in 24.07.2022 (Moscow)
 
-![10.00-22.00_24.07.22](https://media.discordapp.net/attachments/695563421491396728/1069341219391549460/10.00-22.00_24.07.22.png)
+![10.00-22.00_24.07.22](https://github.com/Niron3206/AI_WeatherITSH/raw/master/10.00-22.00_24.07.22.png)
 
 Weather forecast from 0:00 to 12:00 in 28.01.2023 (Moscow) (not so accurate temperature, depends on time of training model)
 
-![0.00-12.00_28.01.23](https://media.discordapp.net/attachments/695563421491396728/1069394784529170442/0.00-12.00_28.01.23.png)
+![0.00-12.00_28.01.23](https://github.com/Niron3206/AI_WeatherITSH/raw/master/0.00-12.00_28.01.23.png)
