@@ -1,5 +1,5 @@
 
-![AI_WeatherITSH](https://media.discordapp.net/attachments/695563421491396728/1069339477945897163/AI_WeatherITSH.png)
+![AI_WeatherITSH](https://github.com/Niron3206/AI_WeatherITSH/raw/master/AI_WeatherITSH.png)
 
 [English](./README.md) | **Русский**
 
@@ -36,8 +36,8 @@
 
 Прогноз погоды с 10:00 до 22:00 на 24.07.2022 (Москва)
 
-![10.00-22.00_24.07.22](https://media.discordapp.net/attachments/695563421491396728/1069341219391549460/10.00-22.00_24.07.22.png)
+![10.00-22.00_24.07.22](https://github.com/Niron3206/AI_WeatherITSH/raw/master/10.00-22.00_24.07.22.png)
 
 Прогноз погоды с 0:00 до 12:00 28.01.2023 (Москва) (температура не очень точная, всё зависит от времени обучения модели)
 
-![0.00-12.00_28.01.23](https://media.discordapp.net/attachments/695563421491396728/1069394784529170442/0.00-12.00_28.01.23.png)
+![0.00-12.00_28.01.23](https://github.com/Niron3206/AI_WeatherITSH/raw/master/0.00-12.00_28.01.23.png)
