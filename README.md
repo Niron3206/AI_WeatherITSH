@@ -4,17 +4,19 @@
 
 # 🌥️ AI_WeatherITSH
 
-Short-term temperature forecasting treated as a time series problem. An LSTM network takes a seven-day window of hourly weather observations (pressure, temperature and a third channel) and predicts air temperature for the next 24 hours at a 10-minute resolution. The network is trained on the public Jena Climate 2009–2016 dataset and then applied to readings from public amateur weather sensors obtained through the `narodmon.ru` REST API.
+The model predicts air temperature a day ahead from a history of observations. An LSTM network takes seven days of hourly readings (pressure, temperature and a third channel) and returns 144 temperature values: one for every ten minutes of the next 24 hours.
 
-The project was written in 2023 as a study of recurrent networks and their application to time series. It is a learning exercise, not a production forecasting service, and it is no longer maintained.
+The network was trained on the public Jena Climate 2009–2016 dataset. Forecasts are built from readings of amateur weather sensors, served by the narodmon.ru REST API.
+
+The project was written in 2023 to find out how recurrent networks behave on time series. A study exercise, not a weather forecasting service. It has not been updated since.
 
 ## Data
 
-**Training.** Jena Climate 2009–2016, recorded at the Max Planck Institute for Biogeochemistry in Jena, Germany: 420 551 records at a 10-minute interval, 14 meteorological variables. The dataset is downloaded automatically by `model.py` from the TensorFlow storage. Three columns are used: `p (mbar)`, `T (degC)` and `rho (g/m**3)`. The first 300 000 records form the training split, the remainder is used for validation. All three columns are standardized with the mean and standard deviation of the training split.
+**Training.** Jena Climate 2009–2016, recordings of the weather station at the Max Planck Institute for Biogeochemistry in Jena, Germany: 420,551 records at a 10-minute interval, 14 meteorological variables. `model.py` downloads the archive from TensorFlow storage on its own. Three of the 14 columns went into the model: `p (mbar)`, `T (degC)` and `rho (g/m**3)`. The first 300,000 records go to training, the remainder to validation. All three columns are brought to zero mean and unit variance using the statistics of the training part.
 
-**Splitting the series into intervals.** `intervals_organization.py` slides a window over the series one record at a time. For each position it takes the previous 1008 records (7 days) and subsamples them with a step of 6, which yields 168 hourly time steps of 3 features per sample. The target is the next 144 temperature values, i.e. 24 hours ahead at the original 10-minute resolution.
+**Splitting the series into intervals.** `intervals_organization.py` moves a window along the series one record per step. At each position it takes the previous 1008 records (exactly 7 days) and thins them with a step of 6, which leaves 168 hourly points of 3 features. What the network learns to guess is the next 144 temperature values, that is, a day ahead at the original ten-minute resolution.
 
-**Inference.** The `narodmonitoring` package authenticates against the `narodmon.ru` API (`userLogon`) and requests one month of history (`sensorsHistory`) for three sensor ids specified in `.env`: pressure, temperature and humidity. The result is written to `csv_files/history_1month.csv`; the last 168 rows are written separately to `csv_files/history_7days.csv` and serve as the model input. `forecast.py` standardizes that window by its own mean and standard deviation, reshapes it to `(1, 168, 3)`, runs the prediction and converts the output back to degrees Celsius using the temperature statistics of the same window.
+**Forecasting.** The `narodmonitoring` package logs into the narodmon.ru API (`userLogon`) and requests a month of history (`sensorsHistory`) for the three sensor ids from `.env`: pressure, temperature, humidity. All of it lands in `csv_files/history_1month.csv`, and the last 168 rows go separately into `csv_files/history_7days.csv`, which is what reaches the model. `forecast.py` standardizes that window by its own mean and deviation, reshapes it to `(1, 168, 3)`, runs it through the network and converts the result back to degrees using the temperature statistics of the same window.
 
 ## Model
 
@@ -24,18 +26,19 @@ A sequential Keras model:
 | --- | --- |
 | LSTM | 32 units, `return_sequences=True`, input shape `(168, 3)` |
 | LSTM | 16 units, `activation='relu'` |
-| Dense | 144 outputs (one per 10-minute step of the forecast horizon) |
+| Dense | 144 outputs, one per ten-minute step of the horizon |
 
-Optimizer - RMSprop with `clipvalue=1.0`, loss - mean absolute error. Training runs for 10 epochs of 200 steps, batch size 256, shuffle buffer 10 000, 50 validation steps per epoch. The global random seed is fixed at 13. The trained model is saved in SavedModel format to `saved_model/AI_WeatherITSH-24H`. TensorFlow 2.11.1, Python 3.10.
+Optimizer RMSprop with `clipvalue=1.0`, loss function: mean absolute error. Training runs for 10 epochs of 200 steps, batch 256, shuffle buffer 10,000, 50 validation steps per epoch. The random seed is fixed at 13. The finished model is saved in SavedModel format to `saved_model/AI_WeatherITSH-24H`. TensorFlow 2.11.1, Python 3.10.
 
 ## Limitations
 
-- **The model is trained and applied on different data.** Training uses a single research-grade station in Jena; inference uses amateur sensors in the Moscow area. The third input channel is not the same either: air density during training, relative humidity at inference. Whether the model transfers across this gap was never verified.
-- **There is no quantitative evaluation.** Only the training and validation loss were observed during fitting. No metric was measured on a held-out period, and the forecast was never compared against a baseline such as persistence.
-- **Normalization at inference uses the statistics of the input window itself**, not the statistics stored from training, so identical weather can be scaled differently depending on the week.
-- **Data handling is fragile.** Sensor histories are joined by row position with no time alignment or gap handling, and the pipeline stops if the API is unreachable.
+The network was trained on one set of data and is applied to another. Training runs on a research weather station in Jena, forecasting on amateur sensors in Moscow and the surrounding region. The third input feature does not match either: air density during training, humidity during forecasting. Whether the model survives that move was never checked.
 
-Done differently today, the project would keep the same feature set on both sides and persist the training scaler, report MAE on a held-out period against a persistence baseline, and train on data from the same sensors that are used for the forecast.
+There are no quality figures here. Only the loss function was tracked during training.
+
+Two more things hurt accuracy at inference. Normalization is computed from the statistics of the input window itself instead of the ones saved from training, so the same weather is scaled differently depending on the week. And the histories of the three sensors are joined by row number, with no time alignment and no handling of gaps; if the API is unavailable, the script stops.
+
+Today it would be worth doing this differently: keep one feature set for training and forecasting, save the scaler together with the model, measure MAE on a held-out period against a baseline, and train the network on data from the same sensors the forecast is later built from.
 
 ## 🔧 Downloading and setting up
 
@@ -47,7 +50,7 @@ Done... you've got a trained and fully capable of predicting model.
 
 #### So how do we predict?
 
-In this project, I used REST API from `https://narodmon.ru` site. To obtain the weather data, you have to set up some environment variables in `narodmonitoring\.env` file.
+The project uses the REST API from `https://narodmon.ru` site. To obtain the weather data, you have to set up some environment variables in `narodmonitoring\.env` file.
 Before you do that, you must create an account there and get your api key, login and password.
 Also, find any public sensors (pressure, temperature, humidity) then get their ids and insert into `narodmonitoring\.env` file.
 Run `__init__.py`.
@@ -56,7 +59,7 @@ After when everything is done, run `forecast.py` script to get your forecast as 
 
 ## 📷 Screenshots
 
-The screenshots below were produced by an earlier version of the model with a 12-hour horizon.
+The screenshots were taken with an earlier version of the model, its horizon was 12 hours.
 
 Weather forecast from 10:00 to 22:00 in 24.07.2022 (Moscow)
 
@@ -68,4 +71,4 @@ Weather forecast from 0:00 to 12:00 in 28.01.2023 (Moscow) (not so accurate temp
 
 ## License
 
-MIT - see [LICENSE.md](./LICENSE.md).
+MIT, see [LICENSE.md](./LICENSE.md).
